@@ -22,40 +22,25 @@ builds:
       - CGO_ENABLED=0
     goos:
       - linux
-      - darwin
-      - windows
     goarch:
       - amd64
-      - arm64
-    ignore:
-      - goos: windows
-        goarch: arm64
     ldflags:
       - -s -w -X github.com/charmbracelet/crush/internal/version.Version={{.Version}}
     flags:
       - -trimpath
 
 archives:
-  - name_template: >-
-      {{ .ProjectName }}_
-      {{- .Version }}_
-      {{- title .Os }}_
-      {{- if eq .Arch "amd64" }}x86_64
-      {{- else }}{{ .Arch }}{{ end }}
+  - name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     wrap_in_directory: true
     files:
       - README*
       - LICENSE*
       - manpages/*
       - completions/*
-    format_overrides:
-      - goos: windows
-        formats: [zip]
 
 nfpms:
   - formats:
       - deb
-      - rpm
     file_name_template: "{{ .ConventionalFileName }}"
     maintainer: "Fork maintainer"
     description: "A powerful terminal-based AI assistant"
